@@ -3,22 +3,27 @@ import Spinner from "components/Spinner";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
+  const [animation, setAnimation] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
-      // setIsLoading(false);
-    }, 5000);
+      setAnimation(true);
+    }, 1000);
   }, []);
 
   return (
     <div className="App">
       {isLoading && (
         <>
-          <img
-            src="https://1000marcas.net/wp-content/uploads/2022/06/Syngenta-Logo-tumb.png"
-            alt=""
-          />
-          <Spinner />
+          <div>
+            <img
+              src="https://1000marcas.net/wp-content/uploads/2022/06/Syngenta-Logo-tumb.png"
+              alt=""
+            />
+          </div>
+          <div>
+            <Spinner animation={animation} onAnimationEnd={() => setIsLoading(false)} />
+          </div>
         </>
       )}
     </div>
