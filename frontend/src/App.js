@@ -1,10 +1,16 @@
 import { useEffect, useState } from "react";
-import Spinner from "components/Spinner";
+import LoadingPage from "Pages/Loading";
+import Home from "Pages/Home";
+
+// LoadingPage component disappears itself when 'isLoading' changes its state
+// allowing a smooth transition between pages
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [animation, setAnimation] = useState(false);
 
+  // This 'setTimeout' is used as an approach
+  // so that it's similar to waiting for a HTTP request to the server
   useEffect(() => {
     setTimeout(() => {
       setAnimation(true);
@@ -13,19 +19,12 @@ function App() {
 
   return (
     <div className="App">
-      {isLoading && (
-        <>
-          <div>
-            <img
-              src="https://1000marcas.net/wp-content/uploads/2022/06/Syngenta-Logo-tumb.png"
-              alt=""
-            />
-          </div>
-          <div>
-            <Spinner animation={animation} onAnimationEnd={() => setIsLoading(false)} />
-          </div>
-        </>
-      )}
+      <LoadingPage
+        animation={animation}
+        isLoading={isLoading}
+        handleIsLoading={setIsLoading}
+      />
+      {!isLoading && <Home />}
     </div>
   );
 }

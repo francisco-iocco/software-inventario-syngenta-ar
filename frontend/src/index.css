@@ -16,12 +16,5 @@ html, body, #root {
   margin: auto;
   max-width: 1400px;
   overflow: hidden;
-}
-
-.App > div {
-  align-items: center;
-  display: flex;
-  height: 50%;
-  justify-content: center;
   position: relative;
 }
