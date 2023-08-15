@@ -26,7 +26,7 @@ export default function LoadingPage({ animation, isLoading, handleIsLoading }) {
             <Section>
               <img
                 src="https://1000marcas.net/wp-content/uploads/2022/06/Syngenta-Logo-tumb.png"
-                alt=""
+                alt="Logo de Syngenta"
               />
             </Section>
             <Section>

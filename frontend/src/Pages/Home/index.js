@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
+import { Logo, Container, Header } from "./styles.js";
 import LoadingPage from "Pages/Loading";
 import Nav from "components/Nav";
+import SearchBar from "components/SearchBar";
 
 // LoadingPage component disappears itself when 'isLoading' changes its state
 // allowing a smooth transition between pages
@@ -8,7 +10,7 @@ import Nav from "components/Nav";
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [animation, setAnimation] = useState(false);
-  
+
   // This 'setTimeout' is used as an approach
   // so that it's similar to waiting for a HTTP request to the server
 
@@ -26,10 +28,21 @@ export default function Home() {
         handleIsLoading={setIsLoading}
       />
       {!isLoading && (
-        <div>
-          <div>Texto de ejemplo</div>
+        <>
+          <Container>
+            <Header>
+              <Logo>
+                <img
+                  src="https://1000marcas.net/wp-content/uploads/2022/06/Syngenta-Logo-tumb.png"
+                  alt="Logo de Syngenta"
+                />
+              </Logo>
+              <SearchBar />
+            </Header>
+
+          </Container>
           <Nav />
-        </div>
+        </>
       )}
     </>
   );

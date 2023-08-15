@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export const Navigation = styled.nav`
   bottom: 0;
-  box-shadow: 0 0 30px 1px #eee;
+  box-shadow: rgb(245, 245, 245) 0px 0px 20px 0px;
   height: 75px;
   padding: 10px;
   position: absolute;
@@ -25,7 +25,7 @@ export const Item = styled.li`
   position: relative;
 
   &::before {
-    ${({ animation }) => animation && `animation: paintFromCorner 1s;`}
+    ${({ animation }) => animation && `animation: paintFromCorner 1s forwards;`}
     background-color: #000;
     content: "";
     display: block;
@@ -46,6 +46,7 @@ export const Item = styled.li`
 `;
 
 export const StyledLink = styled(Link)`
+  -webkit-tap-highlight-color: transparent;
   align-items: center;
   background-color: #fff;
   color: #000;
