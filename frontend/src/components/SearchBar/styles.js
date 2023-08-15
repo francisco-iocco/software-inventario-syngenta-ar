@@ -4,7 +4,8 @@ export const Container = styled.div`
   border-radius: 15px;
   box-shadow: rgb(245, 245, 245) 0px 0px 20px 0px;
   display: flex;
-  width: 100%;
+  max-width: 500px;
+  margin: auto;
 `;
 
 export const Label = styled.label`

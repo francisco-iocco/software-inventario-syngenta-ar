@@ -8,6 +8,8 @@ export const Navigation = styled.nav`
   padding: 10px;
   position: absolute;
   width: 100%;
+  z-index: 5;
+  background-color: #fff;
 `;
 
 export const List = styled.ul`

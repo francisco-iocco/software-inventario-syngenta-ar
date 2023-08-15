@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { Logo, Container, Header } from "./styles.js";
+import { Logo, Container } from "./styles.js";
 import LoadingPage from "Pages/Loading";
+import ListOfGadgets from "components/ListOfGadgets";
 import Nav from "components/Nav";
 import SearchBar from "components/SearchBar";
 
@@ -30,7 +31,7 @@ export default function Home() {
       {!isLoading && (
         <>
           <Container>
-            <Header>
+            <div>
               <Logo>
                 <img
                   src="https://1000marcas.net/wp-content/uploads/2022/06/Syngenta-Logo-tumb.png"
@@ -38,8 +39,8 @@ export default function Home() {
                 />
               </Logo>
               <SearchBar />
-            </Header>
-
+            </div>
+            <ListOfGadgets gadgets={[{}, {}, {}, {}, {}, {}]} />
           </Container>
           <Nav />
         </>

@@ -4,11 +4,9 @@ export const Container = styled.main`
   height: calc(100% - 75px);
   padding: 20px;
   width: 100%;
-`;
-
-export const Header = styled.div`
-  margin: auto;
-  max-width: 750px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 `;
 
 export const Logo = styled.div`
