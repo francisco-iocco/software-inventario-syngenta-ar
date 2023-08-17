@@ -1,30 +1,35 @@
+import { useEffect, useRef, useState } from "react";
 import { BrowserMultiFormatReader } from "@zxing/library";
-import { useEffect, useRef } from "react";
 import { Container, Redline } from "./styles";
+import Modal from "components/Modal";
 
 export default function Scanner() {
   const videoRef = useRef(null);
   const reader = useRef(new BrowserMultiFormatReader());
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     reader.current.decodeFromConstraints(
       {
         audio: false,
         video: {
-          facingMode: "environment"
-        }
+          facingMode: "environment",
+        },
       },
       videoRef.current,
-      (result, error) => {
-        if (result) alert(result);
+      (result) => {
+        result && setShowModal(true);
       }
     );
   }, []);
 
   return (
-    <Container>
-      <video ref={videoRef} />
-      <Redline />
-    </Container>
+    <>
+      <Container>
+        <video ref={videoRef} />
+        <Redline />
+      </Container>
+      {showModal && <Modal onClose={() => setShowModal(false)} />}
+    </>
   );
 }
