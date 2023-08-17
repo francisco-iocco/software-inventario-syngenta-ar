@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export const Navigation = styled.nav`
   bottom: 0;
-  box-shadow: rgb(245, 245, 245) 0px 0px 20px 0px;
+  box-shadow: #f5f5f5 0px 0px 20px 0px;
   height: 75px;
   padding: 10px;
   position: absolute;

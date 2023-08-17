@@ -2,7 +2,7 @@ import { styled } from "styled-components";
 
 export const Container = styled.div`
   border-radius: 15px;
-  box-shadow: rgb(245, 245, 245) 0px 0px 20px 0px;
+  box-shadow: #f5f5f5 0px 0px 20px 0px;
   display: flex;
   max-width: 500px;
   margin: auto;

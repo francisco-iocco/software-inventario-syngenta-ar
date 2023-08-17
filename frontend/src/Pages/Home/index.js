@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Logo, Container } from "./styles.js";
+import { Logo, Container, Header } from "./styles.js";
 import LoadingPage from "Pages/Loading";
 import ListOfGadgets from "components/ListOfGadgets";
 import Nav from "components/Nav";
@@ -31,15 +31,17 @@ export default function Home() {
       {!isLoading && (
         <>
           <Container>
-            <div>
-              <Logo>
-                <img
-                  src="https://1000marcas.net/wp-content/uploads/2022/06/Syngenta-Logo-tumb.png"
-                  alt="Logo de Syngenta"
-                />
-              </Logo>
-              <SearchBar />
-            </div>
+            <Header>
+              <div>
+                <Logo>
+                  <img
+                    src="https://1000marcas.net/wp-content/uploads/2022/06/Syngenta-Logo-tumb.png"
+                    alt="Logo de Syngenta"
+                  />
+                </Logo>
+                <SearchBar />
+              </div>
+            </Header>
             <ListOfGadgets gadgets={[{}, {}, {}, {}, {}, {}]} />
           </Container>
           <Nav />

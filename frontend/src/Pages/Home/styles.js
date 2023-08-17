@@ -9,6 +9,17 @@ export const Container = styled.main`
   flex-direction: column;
 `;
 
+export const Header = styled.div`
+  align-items: center;
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+
+  & > div {
+    width: 100%;
+  }
+`;
+
 export const Logo = styled.div`
   margin: auto;
   width: 10em;
