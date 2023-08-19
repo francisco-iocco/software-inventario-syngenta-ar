@@ -57,12 +57,12 @@ export const Actions = styled.div`
 `;
 
 export const Button = styled.button`
-  background-color: ${({ isActive }) =>
-    isActive === "true" ? "#fff" : "#eee"};
+  background-color: ${({ $isactive }) =>
+    $isactive === "true" ? "#fff" : "#eee"};
   border-radius: 10px 10px 0 0;
   border: none;
-  color: ${({ isActive, desc }) => {
-    if (isActive === "false") return "#ddd";
+  color: ${({ $isactive, desc }) => {
+    if ($isactive === "false") return "#ddd";
     if (desc === "add") return "darkgreen";
     if (desc === "deliver") return "#613fe5";
   }};
