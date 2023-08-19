@@ -19,6 +19,10 @@ export const List = styled.ul`
   justify-content: space-evenly;
   list-style-type: none;
   width: 100%;
+
+  @media screen and (min-width: 780px) {
+    justify-content: center;
+  }
 `;
 
 export const Item = styled.li`
@@ -44,7 +48,7 @@ export const Item = styled.li`
     to {
       transform: translate(0, 0);
     }
-  } 
+  }
 `;
 
 export const StyledLink = styled(Link)`
@@ -56,4 +60,10 @@ export const StyledLink = styled(Link)`
   font-size: 2em;
   justify-content: space-evenly;
   mix-blend-mode: screen;
+
+  ${({ to }) => to === "/scanner" && `
+    @media screen and (min-width: 780px) {
+      display: none;
+    }
+  `}
 `;

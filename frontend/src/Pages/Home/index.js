@@ -10,14 +10,14 @@ import SearchBar from "components/SearchBar";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
-  const [animation, setAnimation] = useState(false);
+  const [animation, setAnimation] = useState("false");
 
   // This 'setTimeout' is used as an approach
   // so that it's similar to waiting for a HTTP request to the server
 
   useEffect(() => {
     setTimeout(() => {
-      setAnimation(true);
+      setAnimation("true");
     }, 1000);
   }, []);
 
