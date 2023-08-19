@@ -20,14 +20,14 @@ function Modal({ onClose }) {
         <div>
           <Actions>
             <Button
-              isActive={action === "add" ? "true" : "false"}
+              $isactive={action === "add" ? "true" : "false"}
               onClick={() => setAction("add")}
               desc="add"
             >
               Agregar
             </Button>
             <Button
-              isActive={action === "deliver" ? "true" : "false"}
+              $isactive={action === "deliver" ? "true" : "false"}
               onClick={() => setAction("deliver")}
               desc="deliver"
             >
