@@ -1,8 +1,8 @@
 import { styled } from "styled-components";
 
 export const StyledModal = styled.div`
-  background-color: ${({ animation }) =>
-    animation === "close-modal" ? "rgba(0, 0, 0, .0)" : "rgba(0, 0, 0, .6)"};
+  background-color: ${({ $animation }) =>
+    $animation === "close-modal" ? "rgba(0, 0, 0, .0)" : "rgba(0, 0, 0, .6)"};
   height: 100%;
   position: absolute;
   transition: background-color .5s;
@@ -11,8 +11,8 @@ export const StyledModal = styled.div`
 `;
 
 export const Container = styled.div`
-  animation: ${({ animation }) =>
-    animation === "close-modal" ? "hideDown" : "showUp"} 0.5s forwards;
+  animation: ${({ $animation }) =>
+    $animation === "close-modal" ? "hideDown" : "showUp"} 0.5s forwards;
   display: grid;
   height: 100%;
   place-items: center;
@@ -61,10 +61,10 @@ export const Button = styled.button`
     $isactive === "true" ? "#fff" : "#eee"};
   border-radius: 10px 10px 0 0;
   border: none;
-  color: ${({ $isactive, desc }) => {
+  color: ${({ $isactive, $desc }) => {
     if ($isactive === "false") return "#ddd";
-    if (desc === "add") return "darkgreen";
-    if (desc === "deliver") return "#613fe5";
+    if ($desc === "add") return "darkgreen";
+    if ($desc === "deliver") return "#613fe5";
   }};
   font-weight: 600;
   padding: 10px 0;

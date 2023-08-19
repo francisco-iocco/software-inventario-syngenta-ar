@@ -12,7 +12,7 @@ export const Section = styled.div`
 // First one changes pages when it ends (the element is covering all the page, so we don't see it)
 // Second one dissapears the current page
 export const TransitionBlock = styled.div`
-  ${({ animation }) => animation && `animation: slideDown 1s linear 3.5s forwards, slideDown2 1s linear 4.5s forwards;`}
+  ${({ $animation }) => $animation && `animation: slideDown 1s linear 3.5s forwards, slideDown2 1s linear 4.5s forwards;`}
   background-color: #aaa;
   height: 200vh;
   position: absolute;

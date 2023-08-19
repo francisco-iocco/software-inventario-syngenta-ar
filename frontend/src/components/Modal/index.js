@@ -15,21 +15,21 @@ function Modal({ onClose }) {
   };
 
   return (
-    <StyledModal animation={animation}>
-      <Container animation={animation}>
+    <StyledModal $animation={animation}>
+      <Container $animation={animation}>
         <div>
           <Actions>
             <Button
               $isactive={action === "add" ? "true" : "false"}
               onClick={() => setAction("add")}
-              desc="add"
+              $desc="add"
             >
               Agregar
             </Button>
             <Button
               $isactive={action === "deliver" ? "true" : "false"}
               onClick={() => setAction("deliver")}
-              desc="deliver"
+              $desc="deliver"
             >
               Entregar
             </Button>

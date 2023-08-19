@@ -1,7 +1,7 @@
 import { styled } from "styled-components";
 
 export const Frame = styled.div`
-  ${({ animation }) => animation && `animation: translate 1.5s ease-in-out 2s forwards;`}
+  ${({ $animation }) => $animation && `animation: translate 1.5s ease-in-out 2s forwards;`}
   align-items: center;
   border-radius: 50%;
   display: flex;
@@ -37,7 +37,7 @@ export const StyledSpinner = styled.div`
 `;
 
 export const Cover = styled.div`
-  ${({ animation }) => animation && `animation: putOver 2s linear forwards;`}
+  ${({ $animation }) => $animation && `animation: putOver 2s linear forwards;`}
   background-color: #aaa;
   height: 100%;
   position: absolute;

@@ -27,7 +27,7 @@ export const Item = styled.li`
   position: relative;
 
   &::before {
-    ${({ animation }) => animation && `animation: paintFromCorner 1s forwards;`}
+    ${({ $animation }) => $animation && `animation: paintFromCorner 1s forwards;`}
     background-color: #000;
     content: "";
     display: block;

@@ -18,7 +18,7 @@ export default function LoadingPage({ animation, isLoading, handleIsLoading }) {
     return (
       <>
         <TransitionBlock
-          animation={animation}
+          $animation={animation}
           onAnimationEnd={() => handleIsLoading(false)}
         />
         {isLoading && (
