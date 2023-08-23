@@ -1,0 +1,19 @@
+{
+  "name": "software-inventario-syngenta-ar-backend",
+  "version": "1.0.0",
+  "description": "API REST for processing requests from frontend",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "author": "franciscoiocco6@gmail.com",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mongoose": "^7.4.3",
+    "multer": "^1.4.5-lts.1",
+    "nodemon": "^3.0.1"
+  }
+}
