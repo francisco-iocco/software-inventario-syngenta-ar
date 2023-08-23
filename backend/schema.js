@@ -7,7 +7,7 @@ const gadgetSchema = new mongoose.Schema({
     required: true
   },
   barcode: {
-    type: Number,
+    type: String,
     required: true
   },
   ownedQuantity: {

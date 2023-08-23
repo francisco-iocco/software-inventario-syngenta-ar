@@ -46,24 +46,22 @@ app.post("/gadgets", upload.single("image"), async (req, res) => {
     return res
       .status(400)
       .send({ err: "La cantidad de dispositivos debe ser mayor que 0" });
-  } else if (!parseInt(body.barcode)) {
+  } else if (!parseInt(body.ownedQuantity)) {
     return res
       .status(400)
       .send({ err: "La cantidad de dispositivos propios debe ser un número" });
   }
 
   if (!file?.buffer || !file?.mimetype) {
-    return res
-      .status(400)
-      .send({
-        err: "La imagen del dispositivo el obligatoria, al igual que su tipo MIME",
-      });
+    return res.status(400).send({
+      err: "La imagen del dispositivo el obligatoria, al igual que su tipo MIME",
+    });
   }
 
   // Creating gadget instance
   const gadget = new Gadget({
     name: body.name,
-    barcode: body.barcode,
+    barcode: body.barcode.slice(0, 6),
     ownedQuantity: body.ownedQuantity,
     givenQuantity: 0,
     image: {
@@ -83,10 +81,23 @@ app.post("/gadgets", upload.single("image"), async (req, res) => {
 });
 
 app.get("/gadgets", async (req, res) => {
+  const { query } = req;
   try {
-    const gadgets = await Gadget.find();
-    const status = gadgets.length ? 200 : 204;
-    return res.status(status).send(gadgets);
+    if (query.barcode) {
+      if (query.barcode.length < 6)
+        return res.status(400).send({
+          err: "El código de barras debe contener al menos el tipo de producto y el código del fabricante",
+        });
+      const barcode = query.barcode.slice(0, 6);
+      const gadget = await Gadget.findOne({ barcode });
+      if (!gadget)
+        return res.status(404).send({ err: "El dispositivo no existe" });
+      return res.status(200).send(gadget);
+    } else {
+      const gadgets = await Gadget.find();
+      if (!gadgets.length) return res.status(204).send();
+      return res.status(200).send(gadgets);
+    }
   } catch (err) {
     return res.status(500).send({ err: err._message });
   }
@@ -97,10 +108,7 @@ app.get("/gadgets/:id", async (req, res) => {
     params: { id },
   } = req;
 
-  if (!id)
-    return res
-      .status(400)
-      .send({ err: "Se debe proveer un id" });
+  if (!id) return res.status(400).send({ err: "Se debe proveer un id" });
   if (id.length != 24)
     return res
       .status(400)
@@ -108,8 +116,9 @@ app.get("/gadgets/:id", async (req, res) => {
 
   try {
     const gadget = await Gadget.findById(id);
-    const status = gadget ? 200 : 204;
-    return res.status(status).send(gadget);
+    if (!gadget)
+      return res.status(404).send({ err: "El dispositivo no existe" });
+    return res.status(200).send(gadget);
   } catch (err) {
     return res.status(500).send({ err: err._message });
   }
