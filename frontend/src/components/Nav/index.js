@@ -9,18 +9,18 @@ export default function Nav() {
     <Navigation>
       <List>
         {document.body.clientWidth <= 780 && (
-          <Item animation={pathname === "/scanner" ? "true" : ""}>
+          <Item $animation={pathname === "/scanner" ? "true" : ""}>
             <StyledLink to="/scanner">
               <IconBarcode size="1em" />
             </StyledLink>
           </Item>
         )}
-        <Item animation={pathname === "/" ? "true" : ""}>
+        <Item $animation={pathname === "/" ? "true" : ""}>
           <StyledLink to="/">
             <IconHome size="1em" />
           </StyledLink>
         </Item>
-        <Item animation={pathname === "/classifier" ? "true" : ""}>
+        <Item $animation={pathname === "/classifier" ? "true" : ""}>
           <StyledLink to="/classifier">
             <IconTextPlus size="1em" />
           </StyledLink>

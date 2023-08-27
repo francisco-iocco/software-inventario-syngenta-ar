@@ -1,10 +1,13 @@
 import Router from "Router";
+import { GadgetsContextProvider } from "contexts/GadgetsContext";
 
 function App() {
   return (
-    <div className="App">
-      <Router />
-    </div>
+    <GadgetsContextProvider>
+      <div className="App">
+        <Router />
+      </div>
+    </GadgetsContextProvider>
   );
 }
 

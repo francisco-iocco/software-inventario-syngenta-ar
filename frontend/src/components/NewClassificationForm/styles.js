@@ -70,7 +70,7 @@ export const Form = styled.form`
 `;
 
 export const ImageContainer = styled.div`
-  border: 2px solid ${({ hasSrc }) => (hasSrc ? "#613fe5" : "#eee")};
+  border: 2px solid ${({ $hasSrc }) => ($hasSrc ? "#613fe5" : "#eee")};
   height: 200px;
   padding: 5px;
   width: 200px;

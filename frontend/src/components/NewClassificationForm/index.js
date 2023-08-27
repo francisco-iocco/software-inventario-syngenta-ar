@@ -17,7 +17,7 @@ export default function NewClassificationForm() {
   return (
     <Form>
       <div>
-        <ImageContainer hasSrc={!!imageSrc}>
+        <ImageContainer $hasSrc={!!imageSrc}>
           <img src={imageSrc} alt="0" />
         </ImageContainer>
         <input type="file" id="image-input" onChange={handleInput} />
