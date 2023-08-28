@@ -1,11 +1,9 @@
 import { createContext, useState, useEffect } from "react";
-import useHandleGadgets from "hooks/useHandleGadgets";
 
 const GadgetsContext = createContext([]);
 
 export function GadgetsContextProvider({ children }) {
   const [gadgets, setGadgets] = useState([]);
-  const { getGadgets } = useHandleGadgets();
 
   useEffect(() => {
     (async function() {
@@ -20,7 +18,7 @@ export function GadgetsContextProvider({ children }) {
       });
       setGadgets(fetchedGadgets);
     })();
-  }, [getGadgets]);
+  }, []);
 
   return (
     <GadgetsContext.Provider

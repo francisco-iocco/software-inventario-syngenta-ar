@@ -23,7 +23,7 @@ export default function Gadget({ gadget }) {
           <span>{gadget.givenQuantity}</span>
         </Details>
       </Container>
-      {showModal && <Modal onClose={() => setShowModal(false)} />}
+      {showModal && <Modal onClose={() => setShowModal(false)} gadget={gadget} />}
     </>
   );
 }

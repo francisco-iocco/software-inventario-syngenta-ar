@@ -34,12 +34,31 @@ export default function useHandleGadgets() {
     });
     response = await response.json();
     if (!response.err) {
-      setGadgets(await getGadgets());
+      await getGadgets();
     }
   };
 
+  const updateGadget = async ({ id, ownedQuantity, givenQuantity }) => {
+    if(ownedQuantity || givenQuantity) {
+      const body = {};
+      if(ownedQuantity) body.ownedQuantity = ownedQuantity;
+      if(givenQuantity) body.givenQuantity = givenQuantity;
+      let response = await fetch(`http://localhost:4000/gadgets/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(body)
+      });
+      if (response.status === 204) {
+        await getGadgets();
+      }
+    }
+  }
+
   return {
     getGadgets,
-    postGadget
+    postGadget,
+    updateGadget
   };
 }

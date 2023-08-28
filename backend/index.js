@@ -185,6 +185,7 @@ app.put("/gadgets/:id", async (req, res) => {
         givenQuantity: outdatedGadget.givenQuantity + quantityToProcess,
       });
     }
+    return res.status(204).send({});
   } catch (err) {
     return res.status(500).send({ err: err._message });
   }
