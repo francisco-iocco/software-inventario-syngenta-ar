@@ -1,15 +1,16 @@
 import { createContext, useState, useEffect } from "react";
-import getGadgets from "services/getGadgets";
+import useHandleGadgets from "hooks/useHandleGadgets";
 
 const GadgetsContext = createContext([]);
 
 export function GadgetsContextProvider({ children }) {
   const [gadgets, setGadgets] = useState([]);
+  const { getGadgets } = useHandleGadgets();
 
   useEffect(() => {
-    (async function () {
-      let fetchedGadgets = await getGadgets();
-      console.log(fetchedGadgets);
+    (async function() {
+      let fetchedGadgets = await fetch("http://localhost:4000/gadgets");
+      fetchedGadgets = await fetchedGadgets.json();
       fetchedGadgets = fetchedGadgets.map((gadget) => {
         const image = new Uint8Array(gadget.image.data.data);
         const base64Image = btoa(image.reduce((data, byte) => {
@@ -19,7 +20,7 @@ export function GadgetsContextProvider({ children }) {
       });
       setGadgets(fetchedGadgets);
     })();
-  }, []);
+  }, [getGadgets]);
 
   return (
     <GadgetsContext.Provider
