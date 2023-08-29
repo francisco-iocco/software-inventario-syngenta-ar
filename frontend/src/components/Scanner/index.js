@@ -39,8 +39,10 @@ export default function Scanner() {
   return (
     <>
       <Container>
-        <video ref={videoRef} />
-        <Redline />
+        <div>
+          <video ref={videoRef} />
+          <Redline />
+        </div>
       </Container>
       {showModal && <Modal onClose={() => setShowModal(false)} gadget={gadget} />}
     </>

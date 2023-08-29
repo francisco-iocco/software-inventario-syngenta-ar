@@ -4,6 +4,7 @@ const GadgetsContext = createContext([]);
 
 export function GadgetsContextProvider({ children }) {
   const [gadgets, setGadgets] = useState([]);
+  const [filterByName, setFilterByName] = useState("");
 
   useEffect(() => {
     (async function() {
@@ -11,10 +12,12 @@ export function GadgetsContextProvider({ children }) {
       fetchedGadgets = await fetchedGadgets.json();
       fetchedGadgets = fetchedGadgets.map((gadget) => {
         const image = new Uint8Array(gadget.image.data.data);
-        const base64Image = btoa(image.reduce((data, byte) => {
-          return data + String.fromCharCode(byte);
-        }, ""));
-        return { ...gadget, image: base64Image }
+        const base64Image = btoa(
+          image.reduce((data, byte) => {
+            return data + String.fromCharCode(byte);
+          }, "")
+        );
+        return { ...gadget, image: base64Image };
       });
       setGadgets(fetchedGadgets);
     })();
@@ -25,6 +28,8 @@ export function GadgetsContextProvider({ children }) {
       value={{
         gadgets,
         setGadgets,
+        filterByName,
+        setFilterByName,
       }}
     >
       {children}
