@@ -2,21 +2,7 @@ import { useContext } from "react";
 import GadgetsContext from "contexts/GadgetsContext";
 
 export default function useHandleGadgets() {
-  const { setGadgets } = useContext(GadgetsContext);
-
-  // Obtain gadgets and arrange their information into an object
-  const getGadgets = async ({ barcode = "" } = {}) => {
-    let gadgets = await fetch("http://192.168.11.81:4000/gadgets");
-    gadgets = await gadgets.json();
-    gadgets = gadgets.map((gadget) => {
-      const image = new Uint8Array(gadget.image.data.data);
-      const base64Image = btoa(image.reduce((data, byte) => {
-        return data + String.fromCharCode(byte);
-      }, ""));
-      return { ...gadget, image: base64Image }
-    });
-    setGadgets(gadgets);
-  };
+  const { updateGadgets } = useContext(GadgetsContext);
 
   const getGadgetByBarcode = async  ({ barcode = "" } = {}) => {
     let gadget = await fetch(`http://192.168.11.81:4000/gadgets?barcode=${barcode}`);
@@ -43,7 +29,7 @@ export default function useHandleGadgets() {
     });
     response = await response.json();
     if (!response.err) {
-      await getGadgets();
+      await updateGadgets();
     }
   };
 
@@ -60,15 +46,14 @@ export default function useHandleGadgets() {
         body: JSON.stringify(body)
       });
       if (response.status === 204) {
-        await getGadgets();
+        await updateGadgets();
       }
     }
   }
 
   return {
-    getGadgets,
-    postGadget,
     updateGadget,
+    postGadget,
     getGadgetByBarcode
   };
 }

@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import GadgetsContext from "contexts/GadgetsContext";
-import { Gadgets } from "./styles";
+import { Gadgets, LoadingGadget } from "./styles";
 import Gadget from "components/Gadget";
 
 export default function ListOfGadgets() {
-  const { gadgets, filterByName } = useContext(GadgetsContext);
+  const { gadgets, filterByName, isLoading } = useContext(GadgetsContext);
   const [renderGadgets, setRenderGadgets] = useState([]);
 
   useEffect(() => {
@@ -21,7 +21,21 @@ export default function ListOfGadgets() {
 
   return (
     <Gadgets>
-      {renderGadgets.map((gadget, index) => (
+      {!isLoading && gadgets.length === 0 && <p>¡No hay dispositivos!</p>}
+      {isLoading && (
+        <>
+          <LoadingGadget>
+            <div></div>
+          </LoadingGadget>
+          <LoadingGadget>
+            <div></div>
+          </LoadingGadget>
+          <LoadingGadget>
+            <div></div>
+          </LoadingGadget>
+        </>
+      )}
+      {!isLoading && renderGadgets.map((gadget, index) => (
         <Gadget gadget={gadget} key={index} />
       ))}
     </Gadgets>
