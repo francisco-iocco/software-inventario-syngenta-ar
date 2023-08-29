@@ -7,7 +7,7 @@ export function GadgetsContextProvider({ children }) {
 
   useEffect(() => {
     (async function() {
-      let fetchedGadgets = await fetch("http://localhost:4000/gadgets");
+      let fetchedGadgets = await fetch("http://192.168.11.81:4000/gadgets");
       fetchedGadgets = await fetchedGadgets.json();
       fetchedGadgets = fetchedGadgets.map((gadget) => {
         const image = new Uint8Array(gadget.image.data.data);

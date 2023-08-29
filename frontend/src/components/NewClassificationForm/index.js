@@ -1,4 +1,5 @@
 import { useReducer } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Form, ImageContainer } from "./styles";
 import useHandleGadgets from "hooks/useHandleGadgets";
 
@@ -37,11 +38,17 @@ export default function NewClassificationForm() {
   const [{ imagePreview, image, name, barcode, quantity }, dispatch] =
     useReducer(reducer, initialState);
   const { postGadget } = useHandleGadgets();
+  const [params] = useSearchParams();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    postGadget({ image, name, barcode, quantity });
-  }
+    postGadget({
+      image,
+      name,
+      barcode: params.get("barcode") || barcode,
+      quantity,
+    });
+  };
 
   const handleFileInput = ({ target }) => {
     // Adding an image preview and the image which will be sent to the backend
@@ -83,7 +90,12 @@ export default function NewClassificationForm() {
         <label>Nombre del dispositivo</label>
       </div>
       <div>
-        <input type="number" value={barcode} onChange={handleBarcodeInput} />
+        <input
+          onChange={handleBarcodeInput}
+          readOnly={params.get("barcode") ? true : false}
+          type="number"
+          value={params.get("barcode") || barcode}
+        />
         <label>Código de barras</label>
       </div>
       <div>

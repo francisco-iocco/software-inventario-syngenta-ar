@@ -10,7 +10,7 @@ export const Container = styled.div`
 
 export const Label = styled.label`
   align-items: center;
-  color: #eee;
+  color: #000;
   display: flex;
   justify-content: center;
   padding: 10px;
@@ -19,7 +19,7 @@ export const Label = styled.label`
 export const Input = styled.input`
   border-radius: inherit;
   border: none;
-  color: #eee;
+  color: #000;
   flex-grow: 1;
   outline: none;
 

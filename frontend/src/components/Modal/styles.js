@@ -4,6 +4,7 @@ export const StyledModal = styled.div`
   background-color: ${({ $animation }) =>
     $animation === "close-modal" ? "rgba(0, 0, 0, .0)" : "rgba(0, 0, 0, .6)"};
   height: 100%;
+  overflow-y: auto;
   position: absolute;
   transition: background-color .5s;
   width: 100%;
@@ -23,6 +24,7 @@ export const Container = styled.div`
     background-color: #fff;
     border-radius: 0 0 15px 15px;
     height: 450px;
+    margin-top: 50px;
     max-width: 500px;
     position: relative;
     width: 90%;

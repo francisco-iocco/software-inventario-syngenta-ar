@@ -6,9 +6,7 @@ export default function useHandleGadgets() {
 
   // Obtain gadgets and arrange their information into an object
   const getGadgets = async ({ barcode = "" } = {}) => {
-    let url = "http://localhost:4000/gadgets";
-    if (barcode) url += `?barcode=${barcode}`;
-    let gadgets = await fetch(url);
+    let gadgets = await fetch("http://192.168.11.81:4000/gadgets");
     gadgets = await gadgets.json();
     gadgets = gadgets.map((gadget) => {
       const image = new Uint8Array(gadget.image.data.data);
@@ -20,6 +18,17 @@ export default function useHandleGadgets() {
     setGadgets(gadgets);
   };
 
+  const getGadgetByBarcode = async  ({ barcode = "" } = {}) => {
+    let gadget = await fetch(`http://192.168.11.81:4000/gadgets?barcode=${barcode}`);
+    gadget = await gadget.json();
+    if(gadget.err) return gadget;
+    const image = new Uint8Array(gadget.image.data.data);
+    const base64Image = btoa(image.reduce((data, byte) => {
+      return data + String.fromCharCode(byte);
+    }, ""));
+    return { ...gadget, image: base64Image };
+  }
+
   // Send gadgets to the backend and obtain all the gadgets
   // (including the new one) once it has finished
   const postGadget = async ({ image, name, barcode, quantity }) => {
@@ -28,7 +37,7 @@ export default function useHandleGadgets() {
     formData.append("name", name);
     formData.append("barcode", barcode);
     formData.append("ownedQuantity", quantity);
-    let response = await fetch("http://localhost:4000/gadgets", {
+    let response = await fetch("http://192.168.11.81:4000/gadgets", {
       method: "POST",
       body: formData,
     });
@@ -43,7 +52,7 @@ export default function useHandleGadgets() {
       const body = {};
       if(ownedQuantity) body.ownedQuantity = ownedQuantity;
       if(givenQuantity) body.givenQuantity = givenQuantity;
-      let response = await fetch(`http://localhost:4000/gadgets/${id}`, {
+      let response = await fetch(`http://192.168.11.81:4000/gadgets/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json"
@@ -59,6 +68,7 @@ export default function useHandleGadgets() {
   return {
     getGadgets,
     postGadget,
-    updateGadget
+    updateGadget,
+    getGadgetByBarcode
   };
 }
