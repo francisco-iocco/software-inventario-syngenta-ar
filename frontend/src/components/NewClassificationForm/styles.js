@@ -85,8 +85,19 @@ export const Form = styled.form`
       border-bottom: 2px solid #ccc;
       box-shadow: #eee 0px 0px 20px 0px;
       color: #aaa;
+      cursor: pointer;
       padding: 10px 20px;
       text-align: center;
+      transition: background-color 0.5s;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+      }
+
+      &:active {
+        background-color: rgba(0, 0, 0, 0.1);
+        transform: scale(1.03);
+      }
     }
   }
 
@@ -99,6 +110,17 @@ export const Form = styled.form`
     font-size: 1.3em;
     outline: none;
     padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.5s;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+
+    &:active {
+      background-color: rgba(0, 0, 0, 0.1);
+      transform: scale(1.03);
+    }
   }
 `;
 

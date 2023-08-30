@@ -2,6 +2,8 @@ import { createContext, useState, useEffect } from "react";
 
 const GadgetsContext = createContext([]);
 
+console.log(process.env)
+
 export function GadgetsContextProvider({ children }) {
   const [gadgets, setGadgets] = useState([]);
   const [filterByName, setFilterByName] = useState("");
@@ -10,8 +12,7 @@ export function GadgetsContextProvider({ children }) {
 
   const updateGadgets = async () => {
     setIsLoading(true);
-    let fetchedGadgets = await fetch("http://192.168.11.81:4000/gadgets");
-    console.log(fetchedGadgets);
+    let fetchedGadgets = await fetch(`${process.env.REACT_APP_API_URL}/gadgets`);
     if (fetchedGadgets.status === 204) {
       setIsLoading(false);
       return;

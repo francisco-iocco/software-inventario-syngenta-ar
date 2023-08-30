@@ -8,6 +8,37 @@ export const Form = styled.form`
   justify-content: space-evenly;
   width: 100%;
 
+  & > p {
+    animation: appear 2s forwards;
+    font-size: 2em;
+    opacity: 0;
+    text-align: center;
+    transform: translateY(-100%);
+
+    &.success {
+      color: darkgreen;
+    }
+
+    &.error {
+      color: red;
+    }
+
+    @keyframes appear {
+      0% {
+        opacity: 0;
+        transform: translateY(-100%);
+      }
+      50% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(100%);
+      }
+    }
+  }
+
   button[type="submit"] {
     background-color: ${({ action }) =>
       action === "add" ? "darkgreen" : "#613fe5"};
@@ -16,7 +47,7 @@ export const Form = styled.form`
     color: #fff;
     font-size: 1.3em;
     padding: 10px 20px;
-    
+
     &[disabled] {
       background-color: #eee;
     }

@@ -34,6 +34,7 @@ export default function Scanner() {
         }
       }
     );
+    return () => reader.current.reset();
   }, []);
 
   return (
@@ -44,7 +45,9 @@ export default function Scanner() {
           <Redline />
         </div>
       </Container>
-      {showModal && <Modal onClose={() => setShowModal(false)} gadget={gadget} />}
+      {showModal && (
+        <Modal onClose={() => setShowModal(false)} gadget={gadget} />
+      )}
     </>
   );
 }

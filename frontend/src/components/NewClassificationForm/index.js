@@ -8,8 +8,8 @@ const initialState = {
   imagePreview: "",
   image: "",
   name: "",
-  barcode: 0,
-  quantity: 0,
+  barcode: "",
+  quantity: "",
 };
 
 const actions = {
@@ -17,6 +17,7 @@ const actions = {
   UPDATE_NAME: "UPDATE_NAME",
   UPDATE_BARCODE: "UPDATE_BARCODE",
   UPDATE_QUANTITY: "UPDATE_QUANTITY",
+  RESET: "RESET",
 };
 
 function reducer(state, action) {
@@ -30,6 +31,8 @@ function reducer(state, action) {
       return { ...state, barcode: action.value };
     case actions.UPDATE_QUANTITY:
       return { ...state, quantity: action.value };
+    case actions.RESET:
+      return { ...initialState };
     default:
       return initialState;
   }
@@ -53,12 +56,13 @@ export default function NewClassificationForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    postGadget({
+    await postGadget({
       image,
       name,
       barcode: params.get("barcode") || barcode,
       quantity,
     });
+    if(isSuccess) dispatch({ type: actions.RESET });
   };
 
   const handleFileInput = ({ target }) => {

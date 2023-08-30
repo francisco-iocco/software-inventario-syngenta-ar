@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { createPortal } from "react-dom";
-import { StyledModal, Container, Actions, Button, CloseContainer } from "./styles";
+import {
+  StyledModal,
+  Container,
+  Actions,
+  Button,
+  CloseContainer,
+} from "./styles";
 import { IconX } from "@tabler/icons-react";
 import ExistingGadgetForm from "components/ExistingGadgetForm";
 
@@ -39,7 +45,11 @@ function Modal({ onClose, gadget }) {
               </button>
             </CloseContainer>
           </Actions>
-          <ExistingGadgetForm action={action} gadget={gadget} onClose={onClose} />
+          <ExistingGadgetForm
+            action={action}
+            gadget={gadget}
+            onClose={handleClose}
+          />
         </div>
       </Container>
     </StyledModal>

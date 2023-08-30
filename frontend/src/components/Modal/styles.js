@@ -68,6 +68,7 @@ export const Button = styled.button`
     if ($desc === "add") return "darkgreen";
     if ($desc === "deliver") return "#613fe5";
   }};
+  cursor: pointer;
   font-weight: 600;
   padding: 10px 0;
 `;
@@ -79,6 +80,7 @@ export const CloseContainer = styled.div`
     background-color: transparent;
     border: none;
     color: #eee;
+    cursor: pointer;
     float: right;
     font-size: 2em;
     margin: 10px;

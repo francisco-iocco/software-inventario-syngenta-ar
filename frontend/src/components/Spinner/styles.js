@@ -12,9 +12,9 @@ export const StyledSpinner = styled.div`
 
   &::before {
     animation: spin 1s linear infinite;
-    border-bottom-color: #eee;
     border-radius: 50%;
     border: 5px solid #f7f7f7;
+    border-bottom-color: #eee;
     content: "";
     display: block;
     height: 100%;

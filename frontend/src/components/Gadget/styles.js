@@ -11,7 +11,7 @@ export const Container = styled.div`
   width: 100%;
 
   &:active {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.1);
     transform: scale(1.03);
 
     img {

@@ -7,16 +7,20 @@ export default function useHandleGadgets() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState(false);
 
-  const getGadgetByBarcode = async  ({ barcode = "" } = {}) => {
-    let gadget = await fetch(`http://192.168.11.81:4000/gadgets?barcode=${barcode}`);
+  const getGadgetByBarcode = async ({ barcode = "" } = {}) => {
+    let gadget = await fetch(
+      `${process.env.REACT_APP_API_URL}/gadgets?barcode=${barcode}`
+    );
     gadget = await gadget.json();
-    if(gadget.err) return gadget;
+    if (gadget.err) return gadget;
     const image = new Uint8Array(gadget.image.data.data);
-    const base64Image = btoa(image.reduce((data, byte) => {
-      return data + String.fromCharCode(byte);
-    }, ""));
+    const base64Image = btoa(
+      image.reduce((data, byte) => {
+        return data + String.fromCharCode(byte);
+      }, "")
+    );
     return { ...gadget, image: base64Image };
-  }
+  };
 
   // Send gadgets to the backend and obtain all the gadgets
   // (including the new one) once it has finished
@@ -29,13 +33,13 @@ export default function useHandleGadgets() {
     formData.append("name", name);
     formData.append("barcode", barcode);
     formData.append("ownedQuantity", quantity);
-    let response = await fetch("http://192.168.11.81:4000/gadgets", {
+    let response = await fetch(`${process.env.REACT_APP_API_URL}/gadgets`, {
       method: "POST",
       body: formData,
     });
-    if(response.status === 201) setIsSuccess(true);
     response = await response.json();
     if (!response.err) {
+      setIsSuccess(true);
       await updateGadgets();
     } else {
       setError(response.err);
@@ -44,29 +48,35 @@ export default function useHandleGadgets() {
   };
 
   const updateGadget = async ({ id, ownedQuantity, givenQuantity }) => {
-    if(ownedQuantity || givenQuantity) {
-      const body = {};
-      if(ownedQuantity) body.ownedQuantity = ownedQuantity;
-      if(givenQuantity) body.givenQuantity = givenQuantity;
-      let response = await fetch(`http://192.168.11.81:4000/gadgets/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(body)
-      });
-      if (response.status === 204) {
-        await updateGadgets();
-      }
+    setError(false);
+    setIsSuccess(false);
+    setIsLoading(true);
+    const body = {};
+    if (ownedQuantity) body.ownedQuantity = ownedQuantity;
+    if (givenQuantity) body.givenQuantity = givenQuantity;
+    let response = await fetch(`${process.env.REACT_APP_API_URL}/gadgets/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+    if(response.status === 204) {
+      setIsSuccess(true);
+    } else {
+      response = await response.json();
+      response.err && setError(response.err);
     }
-  }
+    setIsLoading(false);
+  };
 
   return {
     updateGadget,
+    updateGadgets,
     postGadget,
     getGadgetByBarcode,
     isLoading,
     isSuccess,
-    error
+    error,
   };
 }
