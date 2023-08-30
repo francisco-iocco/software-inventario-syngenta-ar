@@ -6,12 +6,23 @@ export function GadgetsContextProvider({ children }) {
   const [gadgets, setGadgets] = useState([]);
   const [filterByName, setFilterByName] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   const updateGadgets = async () => {
     setIsLoading(true);
-    let gadgets = await fetch("http://192.168.11.81:4000/gadgets");
-    gadgets = await gadgets.json();
-    gadgets = gadgets.map((gadget) => {
+    let fetchedGadgets = await fetch("http://192.168.11.81:4000/gadgets");
+    console.log(fetchedGadgets);
+    if (fetchedGadgets.status === 204) {
+      setIsLoading(false);
+      return;
+    }
+    fetchedGadgets = await fetchedGadgets.json();
+    if(fetchedGadgets.err) {
+      setIsLoading(false);
+      setError(fetchedGadgets.err);
+      return;
+    }
+    fetchedGadgets = fetchedGadgets.map((gadget) => {
       const image = new Uint8Array(gadget.image.data.data);
       const base64Image = btoa(
         image.reduce((data, byte) => {
@@ -20,29 +31,11 @@ export function GadgetsContextProvider({ children }) {
       );
       return { ...gadget, image: base64Image };
     });
-    setGadgets(gadgets);
+    setGadgets(fetchedGadgets);
     setIsLoading(false);
-  }
+  };
 
-  useEffect(() => {
-    (async function() {
-      setIsLoading(true);
-      let fetchedGadgets = await fetch("http://192.168.11.81:4000/gadgets");
-      if(fetchedGadgets.status === 204) return;
-      fetchedGadgets = await fetchedGadgets.json();
-      fetchedGadgets = fetchedGadgets.map((gadget) => {
-        const image = new Uint8Array(gadget.image.data.data);
-        const base64Image = btoa(
-          image.reduce((data, byte) => {
-            return data + String.fromCharCode(byte);
-          }, "")
-        );
-        return { ...gadget, image: base64Image };
-      });
-      setGadgets(fetchedGadgets);
-      setIsLoading(false);
-    })();
-  }, []);
+  useEffect(() => { (async () => await updateGadgets())(); }, []);
 
   return (
     <GadgetsContext.Provider
@@ -51,7 +44,8 @@ export function GadgetsContextProvider({ children }) {
         updateGadgets,
         filterByName,
         setFilterByName,
-        isLoading
+        isLoading,
+        error
       }}
     >
       {children}

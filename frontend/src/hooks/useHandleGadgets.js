@@ -1,8 +1,11 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import GadgetsContext from "contexts/GadgetsContext";
 
 export default function useHandleGadgets() {
   const { updateGadgets } = useContext(GadgetsContext);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [error, setError] = useState(false);
 
   const getGadgetByBarcode = async  ({ barcode = "" } = {}) => {
     let gadget = await fetch(`http://192.168.11.81:4000/gadgets?barcode=${barcode}`);
@@ -18,8 +21,11 @@ export default function useHandleGadgets() {
   // Send gadgets to the backend and obtain all the gadgets
   // (including the new one) once it has finished
   const postGadget = async ({ image, name, barcode, quantity }) => {
+    setError(false);
+    setIsSuccess(false);
+    setIsLoading(true);
     const formData = new FormData();
-    formData.append("image", image, image.name);
+    image && formData.append("image", image, image.name);
     formData.append("name", name);
     formData.append("barcode", barcode);
     formData.append("ownedQuantity", quantity);
@@ -27,10 +33,14 @@ export default function useHandleGadgets() {
       method: "POST",
       body: formData,
     });
+    if(response.status === 201) setIsSuccess(true);
     response = await response.json();
     if (!response.err) {
       await updateGadgets();
+    } else {
+      setError(response.err);
     }
+    setIsLoading(false);
   };
 
   const updateGadget = async ({ id, ownedQuantity, givenQuantity }) => {
@@ -54,6 +64,9 @@ export default function useHandleGadgets() {
   return {
     updateGadget,
     postGadget,
-    getGadgetByBarcode
+    getGadgetByBarcode,
+    isLoading,
+    isSuccess,
+    error
   };
 }

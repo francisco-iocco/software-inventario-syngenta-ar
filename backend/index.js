@@ -25,6 +25,12 @@ app.post("/gadgets", upload.single("image"), async (req, res) => {
   let { body, file } = req;
 
   // Verifying if every field has been sent (and if its format is correct)
+  
+  if (!file?.buffer || !file?.mimetype) {
+    return res.status(400).send({
+      err: "La imagen del dispositivo el obligatoria",
+    });
+  }
 
   if (!body.name) {
     return res
@@ -52,12 +58,11 @@ app.post("/gadgets", upload.single("image"), async (req, res) => {
       .send({ err: "La cantidad de dispositivos propios debe ser un número" });
   }
 
-  if (!file?.buffer || !file?.mimetype) {
-    return res.status(400).send({
-      err: "La imagen del dispositivo el obligatoria, al igual que su tipo MIME",
-    });
-  }
-
+  const existGagdet = await Gadget.findOne({ barcode: body.barcode.slice(0, 6) });
+  if(existGagdet) return res
+    .status(400)
+    .send({ err: "El dispositivo ya existe" });
+  
   // Creating gadget instance
   const gadget = new Gadget({
     name: body.name,

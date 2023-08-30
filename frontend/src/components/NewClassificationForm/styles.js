@@ -12,10 +12,42 @@ export const Form = styled.form`
   max-width: 600px;
   width: 90%;
 
+  & > p {
+    animation: appear 2s forwards;
+    font-size: 2em;
+    opacity: 0;
+    text-align: center;
+    transform: translateY(-100%);
+
+    &.success {
+      color: darkgreen;
+    }
+
+    &.error {
+      color: red;
+    }
+
+    @keyframes appear {
+      0% {
+        opacity: 0;
+        transform: translateY(-100%);
+      }
+      50% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(100%);
+      }
+    }
+  }
+
   & > div {
     display: flex;
     flex-direction: column-reverse;
     gap: 10px;
+    position: relative;
   }
 
   label {

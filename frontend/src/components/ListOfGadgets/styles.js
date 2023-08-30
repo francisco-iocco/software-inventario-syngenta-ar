@@ -10,6 +10,10 @@ export const Gadgets = styled.div`
   margin: auto;
   margin-top: 30px;
   width: 100%;
+
+  p.error {
+    color: red;
+  }
 `;
 
 export const LoadingGadget = styled.div`

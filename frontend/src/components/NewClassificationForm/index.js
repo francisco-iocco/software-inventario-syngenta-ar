@@ -1,7 +1,8 @@
-import { useReducer } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Form, ImageContainer } from "./styles";
 import useHandleGadgets from "hooks/useHandleGadgets";
+import Spinner from "components/Spinner";
 
 const initialState = {
   imagePreview: "",
@@ -37,8 +38,18 @@ function reducer(state, action) {
 export default function NewClassificationForm() {
   const [{ imagePreview, image, name, barcode, quantity }, dispatch] =
     useReducer(reducer, initialState);
-  const { postGadget } = useHandleGadgets();
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const { postGadget, isLoading, isSuccess, error } = useHandleGadgets();
   const [params] = useSearchParams();
+
+  const toggleSuccess = () => setShowSuccess(!showSuccess);
+  const toggleError = () => setShowError(!showError);
+
+  useEffect(() => {
+    isSuccess && toggleSuccess();
+    error && toggleError();
+  }, [isSuccess, error]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -76,35 +87,61 @@ export default function NewClassificationForm() {
     dispatch({ type: actions.UPDATE_QUANTITY, value: target.value });
   };
 
+  if (isLoading) {
+    return (
+      <Form>
+        <Spinner />
+      </Form>
+    );
+  }
+
   return (
     <Form onSubmit={handleSubmit}>
-      <div>
-        <ImageContainer $hasSrc={!!imagePreview}>
-          <img src={imagePreview} alt="0" />
-        </ImageContainer>
-        <input type="file" id="image-input" onChange={handleFileInput} />
-        <label htmlFor="image-input">Seleccioná una foto</label>
-      </div>
-      <div>
-        <input type="text" value={name} onChange={handleNameInput} />
-        <label>Nombre del dispositivo</label>
-      </div>
-      <div>
-        <input
-          onChange={handleBarcodeInput}
-          readOnly={params.get("barcode") ? true : false}
-          type="number"
-          value={params.get("barcode") || barcode}
-        />
-        <label>Código de barras</label>
-      </div>
-      <div>
-        <input type="number" value={quantity} onChange={handleQuantityInput} />
-        <label>Cantidad</label>
-      </div>
-      <div>
-        <button type="submit">Crear</button>
-      </div>
+      {!isLoading && showSuccess && (
+        <p onAnimationEnd={toggleSuccess} className="success">
+          ¡Solicitud exitosa!
+        </p>
+      )}
+      {!isLoading && showError && (
+        <p onAnimationEnd={toggleError} className="error">
+          {error}
+        </p>
+      )}
+      {!showSuccess && !showError && (
+        <>
+          <div>
+            <ImageContainer $hasSrc={!!imagePreview}>
+              <img src={imagePreview} alt="0" />
+            </ImageContainer>
+            <input type="file" id="image-input" onChange={handleFileInput} />
+            <label htmlFor="image-input">Seleccioná una foto</label>
+          </div>
+          <div>
+            <input type="text" value={name} onChange={handleNameInput} />
+            <label>Nombre del dispositivo</label>
+          </div>
+          <div>
+            <input
+              onChange={handleBarcodeInput}
+              readOnly={params.get("barcode") ? true : false}
+              type="number"
+              value={params.get("barcode") || barcode}
+            />
+            <label>Código de barras</label>
+          </div>
+          <div>
+            <input
+              type="number"
+              value={quantity}
+              onChange={handleQuantityInput}
+            />
+            <label>Cantidad</label>
+          </div>
+          <div>
+            <button type="submit">Crear</button>
+          </div>
+        </>
+      )}
     </Form>
   );
 }

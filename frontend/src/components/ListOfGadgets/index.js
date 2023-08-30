@@ -4,7 +4,7 @@ import { Gadgets, LoadingGadget } from "./styles";
 import Gadget from "components/Gadget";
 
 export default function ListOfGadgets() {
-  const { gadgets, filterByName, isLoading } = useContext(GadgetsContext);
+  const { gadgets, filterByName, isLoading, error } = useContext(GadgetsContext);
   const [renderGadgets, setRenderGadgets] = useState([]);
 
   useEffect(() => {
@@ -21,7 +21,8 @@ export default function ListOfGadgets() {
 
   return (
     <Gadgets>
-      {!isLoading && gadgets.length === 0 && <p>¡No hay dispositivos!</p>}
+      {error && <p className="error">{error}</p>}
+      {!isLoading && gadgets.length === 0 && !error && <p>¡No hay dispositivos!</p>}
       {isLoading && (
         <>
           <LoadingGadget>
