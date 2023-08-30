@@ -3,7 +3,7 @@ import { styled } from "styled-components";
 export const StyledModal = styled.div`
   background-color: ${({ $animation }) =>
     $animation === "close-modal" ? "rgba(0, 0, 0, .0)" : "rgba(0, 0, 0, .6)"};
-  height: 100%;
+  height: 200%;
   position: absolute;
   transition: background-color .5s;
   width: 100%;
@@ -14,15 +14,17 @@ export const Container = styled.div`
   animation: ${({ $animation }) =>
     $animation === "close-modal" ? "hideDown" : "showUp"} 0.5s forwards;
   display: grid;
-  height: 100%;
+  height: 50%;
   place-items: center;
   transform: translateY(100%);
+  overflow-y: auto;
   width: 100%;
 
   & > div {
     background-color: #fff;
     border-radius: 0 0 15px 15px;
     height: 450px;
+    margin-top: 50px;
     max-width: 500px;
     position: relative;
     width: 90%;
@@ -66,6 +68,7 @@ export const Button = styled.button`
     if ($desc === "add") return "darkgreen";
     if ($desc === "deliver") return "#613fe5";
   }};
+  cursor: pointer;
   font-weight: 600;
   padding: 10px 0;
 `;
@@ -77,6 +80,7 @@ export const CloseContainer = styled.div`
     background-color: transparent;
     border: none;
     color: #eee;
+    cursor: pointer;
     float: right;
     font-size: 2em;
     margin: 10px;

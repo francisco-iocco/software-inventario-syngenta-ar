@@ -2,28 +2,28 @@ import { useState } from "react";
 import { Container, Image, Name, Details } from "./styles";
 import Modal from "components/Modal";
 
-export default function Gadget() {
+export default function Gadget({ gadget }) {
   const [showModal, setShowModal] = useState(false);
   return (
     <>
       <Container onClick={() => setShowModal(true)}>
         <Image>
           <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrWszFsdqq3l48cIQ_wQoGbs9E1SpNWsVCxdvMkDrGRCQTkSfLXYrKKqFhzRoIORibKtw&usqp=CAU"
+            src={`data:image/png;base64,${gadget.image}`}
             alt="Gadget"
           />
         </Image>
-        <Name>Nombre</Name>
+        <Name>{gadget.name}</Name>
         <Details type="stock">
           <p>Stock</p>
-          <span>15</span>
+          <span>{gadget.ownedQuantity}</span>
         </Details>
         <Details type="delivered">
           <p>Entregados</p>
-          <span>7</span>
+          <span>{gadget.givenQuantity}</span>
         </Details>
       </Container>
-      {showModal && <Modal onClose={() => setShowModal(false)} />}
+      {showModal && <Modal onClose={() => setShowModal(false)} gadget={gadget} />}
     </>
   );
 }

@@ -8,13 +8,46 @@ export const Form = styled.form`
   flex-direction: column;
   height: 600px;
   justify-content: space-evenly;
+  margin: 50px 0;
   max-width: 600px;
   width: 90%;
+
+  & > p {
+    animation: appear 2s forwards;
+    font-size: 2em;
+    opacity: 0;
+    text-align: center;
+    transform: translateY(-100%);
+
+    &.success {
+      color: darkgreen;
+    }
+
+    &.error {
+      color: red;
+    }
+
+    @keyframes appear {
+      0% {
+        opacity: 0;
+        transform: translateY(-100%);
+      }
+      50% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(100%);
+      }
+    }
+  }
 
   & > div {
     display: flex;
     flex-direction: column-reverse;
     gap: 10px;
+    position: relative;
   }
 
   label {
@@ -52,8 +85,19 @@ export const Form = styled.form`
       border-bottom: 2px solid #ccc;
       box-shadow: #eee 0px 0px 20px 0px;
       color: #aaa;
+      cursor: pointer;
       padding: 10px 20px;
       text-align: center;
+      transition: background-color 0.5s;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+      }
+
+      &:active {
+        background-color: rgba(0, 0, 0, 0.1);
+        transform: scale(1.03);
+      }
     }
   }
 
@@ -66,11 +110,22 @@ export const Form = styled.form`
     font-size: 1.3em;
     outline: none;
     padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.5s;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+
+    &:active {
+      background-color: rgba(0, 0, 0, 0.1);
+      transform: scale(1.03);
+    }
   }
 `;
 
 export const ImageContainer = styled.div`
-  border: 2px solid ${({ hasSrc }) => (hasSrc ? "#613fe5" : "#eee")};
+  border: 2px solid ${({ $hasSrc }) => ($hasSrc ? "#613fe5" : "#eee")};
   height: 200px;
   padding: 5px;
   width: 200px;

@@ -1,10 +1,16 @@
 import { useState } from "react";
 import { createPortal } from "react-dom";
-import { StyledModal, Container, Actions, Button, CloseContainer } from "./styles";
+import {
+  StyledModal,
+  Container,
+  Actions,
+  Button,
+  CloseContainer,
+} from "./styles";
 import { IconX } from "@tabler/icons-react";
 import ExistingGadgetForm from "components/ExistingGadgetForm";
 
-function Modal({ onClose }) {
+function Modal({ onClose, gadget }) {
   const [action, setAction] = useState("add");
   const [animation, setAnimation] = useState("");
 
@@ -39,7 +45,11 @@ function Modal({ onClose }) {
               </button>
             </CloseContainer>
           </Actions>
-          <ExistingGadgetForm action={action} />
+          <ExistingGadgetForm
+            action={action}
+            gadget={gadget}
+            onClose={handleClose}
+          />
         </div>
       </Container>
     </StyledModal>
@@ -47,9 +57,9 @@ function Modal({ onClose }) {
 }
 
 // Creating portal so that modal renders above everything
-export default function ModalPortal({ onClose }) {
+export default function ModalPortal({ onClose, gadget }) {
   return createPortal(
-    <Modal onClose={onClose} />,
+    <Modal onClose={onClose} gadget={gadget} />,
     document.getElementById("modal")
   );
 }
