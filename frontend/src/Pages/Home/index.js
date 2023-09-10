@@ -1,4 +1,5 @@
 import { Logo, Container, Header } from "./styles.js";
+import LogoSyn from "assets/Logo.png";
 import ListOfGadgets from "components/ListOfGadgets";
 import Nav from "components/Nav";
 import SearchBar from "components/SearchBar";
@@ -11,7 +12,7 @@ export default function Home() {
           <div>
             <Logo>
               <img
-                src="https://1000marcas.net/wp-content/uploads/2022/06/Syngenta-Logo-tumb.png"
+                src={LogoSyn}
                 alt="Logo de Syngenta"
               />
             </Logo>
