@@ -2,8 +2,6 @@ import { createContext, useState, useEffect } from "react";
 
 const GadgetsContext = createContext([]);
 
-console.log(process.env)
-
 export function GadgetsContextProvider({ children }) {
   const [gadgets, setGadgets] = useState([]);
   const [filterByName, setFilterByName] = useState("");

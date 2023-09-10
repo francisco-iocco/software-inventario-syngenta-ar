@@ -3,6 +3,7 @@ const express = require("express");
 const connect = require("./database");
 const multer = require("multer");
 const Gadget = require("./schema");
+const fs = require("fs");
 const port = process.env.PORT;
 const app = express();
 connect();
@@ -25,7 +26,7 @@ app.post("/gadgets", upload.single("image"), async (req, res) => {
   let { body, file } = req;
 
   // Verifying if every field has been sent (and if its format is correct)
-  
+
   if (!file?.buffer || !file?.mimetype) {
     return res.status(400).send({
       err: "La imagen del dispositivo el obligatoria",
@@ -62,6 +63,11 @@ app.post("/gadgets", upload.single("image"), async (req, res) => {
   if(existGagdet) return res
     .status(400)
     .send({ err: "El dispositivo ya existe" });
+
+  // Storing image in file system
+  fs.writeFile(file.originalname, file.buffer, (err) => {
+    if(err) return res.status(500).send({ err });
+  });
   
   // Creating gadget instance
   const gadget = new Gadget({
@@ -69,10 +75,7 @@ app.post("/gadgets", upload.single("image"), async (req, res) => {
     barcode: body.barcode.slice(0, 6),
     ownedQuantity: parseInt(body.ownedQuantity),
     givenQuantity: 0,
-    image: {
-      data: file.buffer,
-      mimeType: file.mimetype,
-    },
+    imageName: file.originalname
   });
 
   // Trying to store gadget instance in the database
