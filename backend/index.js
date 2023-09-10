@@ -4,6 +4,7 @@ const connect = require("./database");
 const multer = require("multer");
 const Gadget = require("./schema");
 const fs = require("fs");
+const sharp = require("sharp");
 const port = process.env.PORT;
 const app = express();
 connect();
@@ -59,23 +60,30 @@ app.post("/gadgets", upload.single("image"), async (req, res) => {
       .send({ err: "La cantidad de dispositivos propios debe ser un número" });
   }
 
-  const existGagdet = await Gadget.findOne({ barcode: body.barcode.slice(0, 6) });
-  if(existGagdet) return res
-    .status(400)
-    .send({ err: "El dispositivo ya existe" });
+  const existGagdet = await Gadget.findOne({
+    barcode: body.barcode.slice(0, 6),
+  });
+  if (existGagdet)
+    return res.status(400).send({ err: "El dispositivo ya existe" });
 
   // Storing image in file system
-  fs.writeFile(file.originalname, file.buffer, (err) => {
-    if(err) return res.status(500).send({ err });
+  await new Promise((res) => {
+    sharp(file.buffer)
+      .rotate()
+      .resize(200, 300)
+      .toFile(`./images/${file.originalname}`, function(err) {
+        if(err) return res.status(500).send({ err });
+        res();
+      });
   });
-  
+
   // Creating gadget instance
-  const gadget = new Gadget({
+  const gadget = await new Gadget({
     name: body.name,
     barcode: body.barcode.slice(0, 6),
     ownedQuantity: parseInt(body.ownedQuantity),
     givenQuantity: 0,
-    imageName: file.originalname
+    imageName: file.originalname,
   });
 
   // Trying to store gadget instance in the database
@@ -103,10 +111,15 @@ app.get("/gadgets", async (req, res) => {
       const gadget = await Gadget.findOne({ barcode });
       if (!gadget)
         return res.status(404).send({ err: "El dispositivo no existe" });
-      return res.status(200).send(gadget);
+      const image = fs.readFileSync(`./images/${gadget.imageName}`);
+      return res.status(200).send({ ...gadget._doc, image });
     } else {
-      const gadgets = await Gadget.find();
+      let gadgets = await Gadget.find();
       if (!gadgets.length) return res.status(204).send();
+      gadgets = gadgets.map(gadget => {
+        const image = fs.readFileSync(`./images/${gadget.imageName}`);
+        return { ...gadget._doc, image };
+      });
       return res.status(200).send(gadgets);
     }
   } catch (err) {
@@ -129,7 +142,8 @@ app.get("/gadgets/:id", async (req, res) => {
     const gadget = await Gadget.findById(id);
     if (!gadget)
       return res.status(404).send({ err: "El dispositivo no existe" });
-    return res.status(200).send(gadget);
+    const image = fs.readFileSync(`./images/${gadget.imageName}`);
+    return res.status(200).send({ gadget, image });
   } catch (err) {
     return res.status(500).send({ err: err._message });
   }
@@ -171,7 +185,7 @@ app.put("/gadgets/:id", async (req, res) => {
     const outdatedGadget = await Gadget.findById(id);
     if (!outdatedGadget)
       return res.status(404).send({ err: "El dispositivo no existe" });
-    
+
     quantityToProcess = parseInt(quantityToProcess);
 
     // Add gadgets to our amount (if there were)
