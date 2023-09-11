@@ -13,7 +13,7 @@ export default function useHandleGadgets() {
     );
     gadget = await gadget.json();
     if (gadget.err) return gadget;
-    const image = new Uint8Array(gadget.image.data);
+    const image = new Uint8Array(gadget.image.data.data);
     const base64Image = btoa(
       image.reduce((data, byte) => {
         return data + String.fromCharCode(byte);
@@ -32,7 +32,7 @@ export default function useHandleGadgets() {
     image && formData.append("image", image, image.name);
     formData.append("name", name);
     formData.append("barcode", barcode);
-    formData.append("ownedQuantity", quantity);
+    formData.append("ownQuantity", quantity);
     let response = await fetch(`${process.env.REACT_APP_API_URL}/gadgets`, {
       method: "POST",
       body: formData,
@@ -47,12 +47,12 @@ export default function useHandleGadgets() {
     setIsLoading(false);
   };
 
-  const updateGadget = async ({ id, ownedQuantity, givenQuantity }) => {
+  const updateGadget = async ({ id, ownQuantity, givenQuantity }) => {
     setError(false);
     setIsSuccess(false);
     setIsLoading(true);
     const body = {};
-    if (ownedQuantity) body.ownedQuantity = ownedQuantity;
+    if (ownQuantity) body.ownQuantity = ownQuantity;
     if (givenQuantity) body.givenQuantity = givenQuantity;
     let response = await fetch(`${process.env.REACT_APP_API_URL}/gadgets/${id}`, {
       method: "PUT",

@@ -50,11 +50,11 @@ app.post("/gadgets", upload.single("image"), async (req, res) => {
       .send({ err: "El código de barras debe ser un conjunto de números" });
   }
 
-  if (!body.ownedQuantity > 0) {
+  if (!body.ownQuantity > 0) {
     return res
       .status(400)
       .send({ err: "La cantidad de dispositivos debe ser mayor que 0" });
-  } else if (!parseInt(body.ownedQuantity)) {
+  } else if (!parseInt(body.ownQuantity)) {
     return res
       .status(400)
       .send({ err: "La cantidad de dispositivos propios debe ser un número" });
@@ -67,23 +67,24 @@ app.post("/gadgets", upload.single("image"), async (req, res) => {
     return res.status(400).send({ err: "El dispositivo ya existe" });
 
   // Storing image in file system
-  await new Promise((res) => {
+  const resizedImg = await new Promise((res) => {
     sharp(file.buffer)
+      .resize({ width: 150 })
       .rotate()
-      .resize(200, 300)
-      .toFile(`./images/${file.originalname}`, function(err) {
-        if(err) return res.status(500).send({ err });
-        res();
-      });
+      .toBuffer()
+      .then(data => res(data));
   });
 
   // Creating gadget instance
   const gadget = await new Gadget({
     name: body.name,
     barcode: body.barcode.slice(0, 6),
-    ownedQuantity: parseInt(body.ownedQuantity),
+    ownQuantity: parseInt(body.ownQuantity),
     givenQuantity: 0,
-    imageName: file.originalname,
+    image: {
+      data: resizedImg,
+      mimeType: file.mimetype,
+    },
   });
 
   // Trying to store gadget instance in the database
@@ -111,15 +112,10 @@ app.get("/gadgets", async (req, res) => {
       const gadget = await Gadget.findOne({ barcode });
       if (!gadget)
         return res.status(404).send({ err: "El dispositivo no existe" });
-      const image = fs.readFileSync(`./images/${gadget.imageName}`);
-      return res.status(200).send({ ...gadget._doc, image });
+      return res.status(200).send(gadget);
     } else {
       let gadgets = await Gadget.find();
       if (!gadgets.length) return res.status(204).send();
-      gadgets = gadgets.map(gadget => {
-        const image = fs.readFileSync(`./images/${gadget.imageName}`);
-        return { ...gadget._doc, image };
-      });
       return res.status(200).send(gadgets);
     }
   } catch (err) {
@@ -142,8 +138,7 @@ app.get("/gadgets/:id", async (req, res) => {
     const gadget = await Gadget.findById(id);
     if (!gadget)
       return res.status(404).send({ err: "El dispositivo no existe" });
-    const image = fs.readFileSync(`./images/${gadget.imageName}`);
-    return res.status(200).send({ gadget, image });
+    return res.status(200).send(gadget);
   } catch (err) {
     return res.status(500).send({ err: err._message });
   }
@@ -157,7 +152,7 @@ app.put("/gadgets/:id", async (req, res) => {
 
   // Here we calculate if we are either adding gadgets or delivering gadgets.
 
-  let quantityToProcess = body.ownedQuantity || body.givenQuantity;
+  let quantityToProcess = body.ownQuantity || body.givenQuantity;
 
   if (!quantityToProcess) {
     return res.status(400).send({
@@ -189,21 +184,21 @@ app.put("/gadgets/:id", async (req, res) => {
     quantityToProcess = parseInt(quantityToProcess);
 
     // Add gadgets to our amount (if there were)
-    if (body.ownedQuantity) {
+    if (body.ownQuantity) {
       await Gadget.findByIdAndUpdate(id, {
-        ownedQuantity: outdatedGadget.ownedQuantity + quantityToProcess,
+        ownQuantity: outdatedGadget.ownQuantity + quantityToProcess,
       });
     }
 
     // Substract gadgets to our amount and add them to our 'given' amount (if there were)
     if (body.givenQuantity) {
-      if (outdatedGadget.ownedQuantity < quantityToProcess)
+      if (outdatedGadget.ownQuantity < quantityToProcess)
         return res
           .status(400)
           .send({ err: "No hay suficiente stock para entregar" });
 
       await Gadget.findByIdAndUpdate(id, {
-        ownedQuantity: outdatedGadget.ownedQuantity - quantityToProcess,
+        ownQuantity: outdatedGadget.ownQuantity - quantityToProcess,
         givenQuantity: outdatedGadget.givenQuantity + quantityToProcess,
       });
     }

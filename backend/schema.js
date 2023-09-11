@@ -10,12 +10,21 @@ const gadgetSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  ownedQuantity: {
+  ownQuantity: {
     type: Number,
     required: true
   },
   givenQuantity: Number,
-  imageName: String
+  image: {
+    data: {
+      type: Buffer,
+      required: true
+    },
+    mimeType: {
+      type: String,
+      required: true
+    }
+  }
 });
 
 // Establishing in where collection it will be saved (gadgets);

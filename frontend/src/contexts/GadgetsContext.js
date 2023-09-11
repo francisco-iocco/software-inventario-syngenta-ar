@@ -22,8 +22,7 @@ export function GadgetsContextProvider({ children }) {
       return;
     }
     fetchedGadgets = fetchedGadgets.map((gadget) => {
-      console.log({gadget});
-      const image = new Uint8Array(gadget.image.data);
+      const image = new Uint8Array(gadget.image.data.data);
       const base64Image = btoa(
         image.reduce((data, byte) => {
           return data + String.fromCharCode(byte);

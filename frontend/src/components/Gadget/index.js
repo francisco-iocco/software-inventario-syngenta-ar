@@ -16,7 +16,7 @@ export default function Gadget({ gadget }) {
         <Name>{gadget.name}</Name>
         <Details type="stock">
           <p>Stock</p>
-          <span>{gadget.ownedQuantity}</span>
+          <span>{gadget.ownQuantity}</span>
         </Details>
         <Details type="delivered">
           <p>Entregados</p>

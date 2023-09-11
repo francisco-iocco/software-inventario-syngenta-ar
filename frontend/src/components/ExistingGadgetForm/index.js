@@ -25,7 +25,7 @@ export default function ExistingGadgetForm({ action, gadget, onClose }) {
   useEffect(() => {
     // Reset everything in case action changes to 'add' or 'deliver'
     setStockError("");
-    setResultantQuantity(gadget.ownedQuantity);
+    setResultantQuantity(gadget.ownQuantity);
     setGivenQuantity("");
   }, [action]);
 
@@ -40,7 +40,7 @@ export default function ExistingGadgetForm({ action, gadget, onClose }) {
     e.preventDefault();
     const params = {
       id: gadget._id,
-      [action === "add" ? "ownedQuantity" : "givenQuantity"]: givenQuantity,
+      [action === "add" ? "ownQuantity" : "givenQuantity"]: givenQuantity,
     };
     updateGadget(params);
   };
@@ -50,7 +50,7 @@ export default function ExistingGadgetForm({ action, gadget, onClose }) {
     // Depending on the action ('add' or 'deliver')
     setGivenQuantity(value);
     const AmountToCalculate = parseInt(action === "add" ? value : value * -1);
-    const res = gadget.ownedQuantity + (AmountToCalculate || 0);
+    const res = gadget.ownQuantity + (AmountToCalculate || 0);
     if (res >= 0) {
       stockError && setStockError("");
       setResultantQuantity(res);
@@ -88,7 +88,7 @@ export default function ExistingGadgetForm({ action, gadget, onClose }) {
           </GadgetDetails>
           <UserInput>
             <AmountContainer>
-              <span>{gadget.ownedQuantity}</span>
+              <span>{gadget.ownQuantity}</span>
               <p>Stock</p>
             </AmountContainer>
             <InputContainer>
